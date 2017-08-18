@@ -1,0 +1,404 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>neuralnet – Neural networks &mdash; delfi 0.1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="delfi 0.1.1 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> delfi
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../credits.html">Credits</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">delfi</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li><code class="docutils literal"><span class="pre">neuralnet</span></code> – Neural networks</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/neuralnet.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="neuralnet-neural-networks">
+<h1><code class="docutils literal"><span class="pre">neuralnet</span></code> – Neural networks<a class="headerlink" href="#neuralnet-neural-networks" title="Permalink to this headline">¶</a></h1>
+<p>At the core of density estimation by likelihood-free inference are neural
+networks that are used as flexible density estimations (mixture
+density networks). These are implemented in <code class="docutils literal"><span class="pre">delfi.neuralnet</span></code>.</p>
+<div class="section" id="neural-network">
+<h2>Neural Network<a class="headerlink" href="#neural-network" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="delfi.neuralnet.NeuralNet.NeuralNet">
+<em class="property">class </em><code class="descclassname">delfi.neuralnet.NeuralNet.</code><code class="descname">NeuralNet</code><span class="sig-paren">(</span><em>n_inputs, n_outputs, n_components=1, n_hiddens=[50, 50], n_rnn=None, seed=None, svi=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/neuralnet/NeuralNet.html#NeuralNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.neuralnet.NeuralNet.NeuralNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="delfi.neuralnet.NeuralNet.NeuralNet.compile_funs">
+<code class="descname">compile_funs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/neuralnet/NeuralNet.html#NeuralNet.compile_funs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.neuralnet.NeuralNet.NeuralNet.compile_funs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compiles theano functions</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.neuralnet.NeuralNet.NeuralNet.eval_comps">
+<code class="descname">eval_comps</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/neuralnet/NeuralNet.html#NeuralNet.eval_comps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.neuralnet.NeuralNet.NeuralNet.eval_comps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the parameters of all mixture components at given inputs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>np.array</em>) – rows are input locations</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">mixing coefficients, means and scale matrices</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.neuralnet.NeuralNet.NeuralNet.eval_lprobs">
+<code class="descname">eval_lprobs</code><span class="sig-paren">(</span><em>xy</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/neuralnet/NeuralNet.html#NeuralNet.eval_lprobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.neuralnet.NeuralNet.NeuralNet.eval_lprobs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate log probabilities for given input-output pairs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xy</strong> (<em>np.array</em>) – a pair (x, y) where x rows are inputs and y rows are outputs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>log probabilities</strong></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">log p(y|x)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.neuralnet.NeuralNet.NeuralNet.gen_newseed">
+<code class="descname">gen_newseed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/neuralnet/NeuralNet.html#NeuralNet.gen_newseed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.neuralnet.NeuralNet.NeuralNet.gen_newseed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a new random seed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.neuralnet.NeuralNet.NeuralNet.get_mog">
+<code class="descname">get_mog</code><span class="sig-paren">(</span><em>x</em>, <em>n_samples=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/neuralnet/NeuralNet.html#NeuralNet.get_mog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.neuralnet.NeuralNet.NeuralNet.get_mog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the conditional MoG at location x</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>np.array</em>) – single input location</li>
+<li><strong>n_samples</strong> (<em>None</em><em> or </em><em>int</em>) – <p>…</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="delfi.neuralnet.NeuralNet.NeuralNet.params_dict">
+<code class="descname">params_dict</code><a class="headerlink" href="#delfi.neuralnet.NeuralNet.NeuralNet.params_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for params as dict</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="delfi.neuralnet.NeuralNet.NeuralNet.spec_dict">
+<code class="descname">spec_dict</code><a class="headerlink" href="#delfi.neuralnet.NeuralNet.NeuralNet.spec_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specs as dict</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="trainer">
+<h2>Trainer<a class="headerlink" href="#trainer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="delfi.neuralnet.Trainer.Trainer">
+<em class="property">class </em><code class="descclassname">delfi.neuralnet.Trainer.</code><code class="descname">Trainer</code><span class="sig-paren">(</span><em>network</em>, <em>loss</em>, <em>trn_data</em>, <em>val_data=None</em>, <em>step=&lt;function adam&gt;</em>, <em>max_norm=0.1</em>, <em>monitor=None</em>, <em>seed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/neuralnet/Trainer.html#Trainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.neuralnet.Trainer.Trainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="delfi.neuralnet.Trainer.Trainer.train">
+<code class="descname">train</code><span class="sig-paren">(</span><em>epochs=1000</em>, <em>minibatch=50</em>, <em>monitor_every=None</em>, <em>pdb_iter=None</em>, <em>stop_on_nan=False</em>, <em>tol=None</em>, <em>tol_val=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/neuralnet/Trainer.html#Trainer.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.neuralnet.Trainer.Trainer.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trains the model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>epochs</strong> (<em>int</em>) – number of epochs (iterations per sample)</li>
+<li><strong>minibatch</strong> (<em>int</em>) – minibatch size</li>
+<li><strong>monitor_every</strong> (<em>int</em>) – monitoring frequency</li>
+<li><strong>pdb_iter</strong> (<em>int</em>) – if set, will set a breakpoint after given number of iterations</li>
+<li><strong>stop_on_nan</strong> (<em>bool</em><em> (</em><em>default: False</em><em>)</em>) – if True, will stop if loss becomes NaN</li>
+<li><strong>tol</strong> (<em>float</em>) – tolerance criterion for stopping based on training set</li>
+<li><strong>tol_val</strong> (<em>float</em>) – tolerance criterion for stopping based on validation set</li>
+<li><strong>verbose</strong> (<em>bool</em>) – if True, print progress during training</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>dict</strong></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">containing loss values and possibly additional keys</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="data-stream">
+<h2>Data Stream<a class="headerlink" href="#data-stream" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="delfi.neuralnet.DataStream.DataStream">
+<em class="property">class </em><code class="descclassname">delfi.neuralnet.DataStream.</code><code class="descname">DataStream</code><a class="reference internal" href="../_modules/delfi/neuralnet/DataStream.html#DataStream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.neuralnet.DataStream.DataStream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="delfi.neuralnet.DataStream.DataStream.gen">
+<code class="descname">gen</code><span class="sig-paren">(</span><em>N</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/neuralnet/DataStream.html#DataStream.gen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.neuralnet.DataStream.DataStream.gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a new data batch of size N</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Mackelab.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

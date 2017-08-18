@@ -1,0 +1,762 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>distribution – Distributions &mdash; delfi 0.1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="delfi 0.1.1 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> delfi
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../credits.html">Credits</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">delfi</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li><code class="docutils literal"><span class="pre">distribution</span></code> – Distributions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/distribution.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="distribution-distributions">
+<h1><code class="docutils literal"><span class="pre">distribution</span></code> – Distributions<a class="headerlink" href="#distribution-distributions" title="Permalink to this headline">¶</a></h1>
+<p>Several probability distributions are implemented in the module <code class="docutils literal"><span class="pre">delfi.distribution</span></code>.</p>
+<p>The general interface for distributions is specified in the abstract class
+<code class="docutils literal"><span class="pre">BaseDistribution.py</span></code>: Each distribution needs to implement the abstract
+methods  and properties of this class. Mixture distributions and the respective base class are in the module <code class="docutils literal"><span class="pre">delfi.distribution.mixture</span></code>.</p>
+<div class="section" id="discrete">
+<h2>Discrete<a class="headerlink" href="#discrete" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="delfi.distribution.Discrete">
+<em class="property">class </em><code class="descclassname">delfi.distribution.</code><code class="descname">Discrete</code><span class="sig-paren">(</span><em>p</em>, <em>seed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/Discrete.html#Discrete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.Discrete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">delfi.distribution.BaseDistribution.DistributionBase</span></code></p>
+<dl class="method">
+<dt id="delfi.distribution.Discrete.eval">
+<code class="descname">eval</code><span class="sig-paren">(</span><em>x</em>, <em>ii=None</em>, <em>log=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/Discrete.html#Discrete.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.Discrete.eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to evaluate pdf</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>int</em><em> or </em><em>list</em><em> or </em><em>np.array</em>) – Rows are inputs to evaluate at</li>
+<li><strong>ii</strong> (<em>list</em>) – A list of indices specifying which marginal to evaluate.
+If None, the joint pdf is evaluated</li>
+<li><strong>log</strong> (<em>bool</em><em>, </em><em>defaulting to True</em>) – If True, the log pdf is evaluated</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">scalar</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.Discrete.gen">
+<code class="descname">gen</code><span class="sig-paren">(</span><em>n_samples=1</em>, <em>seed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/Discrete.html#Discrete.gen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.Discrete.gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate samples</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_samples</strong> (<em>int</em>) – Number of samples to generate</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">n_samples x self.ndim</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.Discrete.gen_newseed">
+<code class="descname">gen_newseed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#delfi.distribution.Discrete.gen_newseed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a new random seed</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="delfi.distribution.Discrete.mean">
+<code class="descname">mean</code><a class="headerlink" href="#delfi.distribution.Discrete.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Means</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="delfi.distribution.Discrete.std">
+<code class="descname">std</code><a class="headerlink" href="#delfi.distribution.Discrete.std" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standard deviations of marginals</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="gaussian">
+<h2>Gaussian<a class="headerlink" href="#gaussian" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="delfi.distribution.Gaussian">
+<em class="property">class </em><code class="descclassname">delfi.distribution.</code><code class="descname">Gaussian</code><span class="sig-paren">(</span><em>m=None</em>, <em>P=None</em>, <em>U=None</em>, <em>S=None</em>, <em>Pm=None</em>, <em>seed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/Gaussian.html#Gaussian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.Gaussian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">delfi.distribution.BaseDistribution.DistributionBase</span></code></p>
+<dl class="method">
+<dt id="delfi.distribution.Gaussian.convert_to_T">
+<code class="descname">convert_to_T</code><span class="sig-paren">(</span><em>dof</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/Gaussian.html#Gaussian.convert_to_T"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.Gaussian.convert_to_T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts Gaussian to Student T</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.Gaussian.eval">
+<code class="descname">eval</code><span class="sig-paren">(</span><em>x</em>, <em>ii=None</em>, <em>log=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/Gaussian.html#Gaussian.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.Gaussian.eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to evaluate pdf</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>int</em><em> or </em><em>list</em><em> or </em><em>np.array</em>) – Rows are inputs to evaluate at</li>
+<li><strong>ii</strong> (<em>list</em>) – A list of indices specifying which marginal to evaluate.
+If None, the joint pdf is evaluated</li>
+<li><strong>log</strong> (<em>bool</em><em>, </em><em>defaulting to True</em>) – If True, the log pdf is evaluated</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">scalar</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.Gaussian.gen">
+<code class="descname">gen</code><span class="sig-paren">(</span><em>n_samples=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/Gaussian.html#Gaussian.gen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.Gaussian.gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate samples</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_samples</strong> (<em>int</em>) – Number of samples to generate</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">n_samples x self.ndim</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.Gaussian.gen_newseed">
+<code class="descname">gen_newseed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#delfi.distribution.Gaussian.gen_newseed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a new random seed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.Gaussian.kl">
+<code class="descname">kl</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/Gaussian.html#Gaussian.kl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.Gaussian.kl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the KL divergence from this to another Gaussian</p>
+<p>Direction of KL is KL(this | other)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="delfi.distribution.Gaussian.mean">
+<code class="descname">mean</code><a class="headerlink" href="#delfi.distribution.Gaussian.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Means</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="delfi.distribution.Gaussian.std">
+<code class="descname">std</code><a class="headerlink" href="#delfi.distribution.Gaussian.std" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standard deviations of marginals</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.Gaussian.ztrans">
+<code class="descname">ztrans</code><span class="sig-paren">(</span><em>mean</em>, <em>std</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/Gaussian.html#Gaussian.ztrans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.Gaussian.ztrans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Z-transform</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.Gaussian.ztrans_inv">
+<code class="descname">ztrans_inv</code><span class="sig-paren">(</span><em>mean</em>, <em>std</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/Gaussian.html#Gaussian.ztrans_inv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.Gaussian.ztrans_inv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Z-transform inverse</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="mixture-of-gaussians">
+<h2>Mixture of Gaussians<a class="headerlink" href="#mixture-of-gaussians" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="delfi.distribution.mixture.MoG">
+<em class="property">class </em><code class="descclassname">delfi.distribution.mixture.</code><code class="descname">MoG</code><span class="sig-paren">(</span><em>a</em>, <em>ms=None</em>, <em>Ps=None</em>, <em>Us=None</em>, <em>Ss=None</em>, <em>xs=None</em>, <em>seed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/mixture/GaussianMixture.html#MoG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.mixture.MoG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">delfi.distribution.mixture.BaseMixture.MixtureBase</span></code></p>
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoG.calc_mean_and_cov">
+<code class="descname">calc_mean_and_cov</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/mixture/GaussianMixture.html#MoG.calc_mean_and_cov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.mixture.MoG.calc_mean_and_cov" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the mean vector and the covariance matrix of the MoG</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoG.convert_to_T">
+<code class="descname">convert_to_T</code><span class="sig-paren">(</span><em>dofs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/mixture/GaussianMixture.html#MoG.convert_to_T"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.mixture.MoG.convert_to_T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to Mixture of Student’s T distributions</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoG.eval">
+<code class="descname">eval</code><span class="sig-paren">(</span><em>x</em>, <em>ii=None</em>, <em>log=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/mixture/GaussianMixture.html#MoG.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.mixture.MoG.eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to evaluate pdf</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>int</em><em> or </em><em>list</em><em> or </em><em>np.array</em>) – Rows are inputs to evaluate at</li>
+<li><strong>ii</strong> (<em>list</em>) – A list of indices specifying which marginal to evaluate.
+If None, the joint pdf is evaluated</li>
+<li><strong>log</strong> (<em>bool</em><em>, </em><em>defaulting to True</em>) – If True, the log pdf is evaluated</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">scalar</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoG.gen">
+<code class="descname">gen</code><span class="sig-paren">(</span><em>n_samples=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/mixture/GaussianMixture.html#MoG.gen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.mixture.MoG.gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate samples</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_samples</strong> (<em>int</em>) – Number of samples to generate</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">n_samples x self.ndim</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoG.gen_comp">
+<code class="descname">gen_comp</code><span class="sig-paren">(</span><em>n_samples</em><span class="sig-paren">)</span><a class="headerlink" href="#delfi.distribution.mixture.MoG.gen_comp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate component index according to self.a</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoG.gen_newseed">
+<code class="descname">gen_newseed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#delfi.distribution.mixture.MoG.gen_newseed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a new random seed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoG.kl">
+<code class="descname">kl</code><span class="sig-paren">(</span><em>other</em>, <em>n_samples=10000</em><span class="sig-paren">)</span><a class="headerlink" href="#delfi.distribution.mixture.MoG.kl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates the KL from this to another PDF</p>
+<p>KL(this | other), using Monte Carlo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoG.project_to_gaussian">
+<code class="descname">project_to_gaussian</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/mixture/GaussianMixture.html#MoG.project_to_gaussian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.mixture.MoG.project_to_gaussian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a gaussian with the same mean and precision as the mog</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoG.prune_negligible_components">
+<code class="descname">prune_negligible_components</code><span class="sig-paren">(</span><em>threshold</em><span class="sig-paren">)</span><a class="headerlink" href="#delfi.distribution.mixture.MoG.prune_negligible_components" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prune components</p>
+<p>Removes all the components whose mixing coefficient is less
+than a threshold.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoG.ztrans">
+<code class="descname">ztrans</code><span class="sig-paren">(</span><em>mean</em>, <em>std</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/mixture/GaussianMixture.html#MoG.ztrans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.mixture.MoG.ztrans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Z-transform</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoG.ztrans_inv">
+<code class="descname">ztrans_inv</code><span class="sig-paren">(</span><em>mean</em>, <em>std</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/mixture/GaussianMixture.html#MoG.ztrans_inv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.mixture.MoG.ztrans_inv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Z-transform inverse</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="student-s-t">
+<h2>Student’s T<a class="headerlink" href="#student-s-t" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="delfi.distribution.StudentsT">
+<em class="property">class </em><code class="descclassname">delfi.distribution.</code><code class="descname">StudentsT</code><span class="sig-paren">(</span><em>m</em>, <em>S</em>, <em>dof</em>, <em>seed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/StudentsT.html#StudentsT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.StudentsT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">delfi.distribution.BaseDistribution.DistributionBase</span></code></p>
+<dl class="method">
+<dt id="delfi.distribution.StudentsT.eval">
+<code class="descname">eval</code><span class="sig-paren">(</span><em>x</em>, <em>ii=None</em>, <em>log=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/StudentsT.html#StudentsT.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.StudentsT.eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to evaluate pdf</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>int</em><em> or </em><em>list</em><em> or </em><em>np.array</em>) – Rows are inputs to evaluate at</li>
+<li><strong>ii</strong> (<em>list</em>) – A list of indices specifying which marginal to evaluate.
+If None, the joint pdf is evaluated</li>
+<li><strong>log</strong> (<em>bool</em><em>, </em><em>defaulting to True</em>) – If True, the log pdf is evaluated</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">scalar</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.StudentsT.gen">
+<code class="descname">gen</code><span class="sig-paren">(</span><em>n_samples=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/StudentsT.html#StudentsT.gen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.StudentsT.gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate samples</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_samples</strong> (<em>int</em>) – Number of samples to generate</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">n_samples x self.ndim</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.StudentsT.gen_newseed">
+<code class="descname">gen_newseed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#delfi.distribution.StudentsT.gen_newseed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a new random seed</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="delfi.distribution.StudentsT.mean">
+<code class="descname">mean</code><a class="headerlink" href="#delfi.distribution.StudentsT.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Means</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="delfi.distribution.StudentsT.std">
+<code class="descname">std</code><a class="headerlink" href="#delfi.distribution.StudentsT.std" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standard deviations of marginals</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="mixture-of-student-s-t">
+<h2>Mixture of Student’s T<a class="headerlink" href="#mixture-of-student-s-t" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="delfi.distribution.mixture.MoT">
+<em class="property">class </em><code class="descclassname">delfi.distribution.mixture.</code><code class="descname">MoT</code><span class="sig-paren">(</span><em>a</em>, <em>ms=None</em>, <em>Ss=None</em>, <em>dofs=None</em>, <em>xs=None</em>, <em>seed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/mixture/StudentsTMixture.html#MoT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.mixture.MoT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">delfi.distribution.mixture.BaseMixture.MixtureBase</span></code></p>
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoT.eval">
+<code class="descname">eval</code><span class="sig-paren">(</span><em>x</em>, <em>ii=None</em>, <em>log=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/mixture/StudentsTMixture.html#MoT.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.mixture.MoT.eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to evaluate pdf</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>int</em><em> or </em><em>list</em><em> or </em><em>np.array</em>) – Rows are inputs to evaluate at</li>
+<li><strong>ii</strong> (<em>list</em>) – A list of indices specifying which marginal to evaluate.
+If None, the joint pdf is evaluated</li>
+<li><strong>log</strong> (<em>bool</em><em>, </em><em>defaulting to True</em>) – If True, the log pdf is evaluated</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">scalar</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoT.gen">
+<code class="descname">gen</code><span class="sig-paren">(</span><em>n_samples=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/mixture/StudentsTMixture.html#MoT.gen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.mixture.MoT.gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate samples</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_samples</strong> (<em>int</em>) – Number of samples to generate</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">n_samples x self.ndim</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoT.gen_comp">
+<code class="descname">gen_comp</code><span class="sig-paren">(</span><em>n_samples</em><span class="sig-paren">)</span><a class="headerlink" href="#delfi.distribution.mixture.MoT.gen_comp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate component index according to self.a</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoT.gen_newseed">
+<code class="descname">gen_newseed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#delfi.distribution.mixture.MoT.gen_newseed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a new random seed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoT.kl">
+<code class="descname">kl</code><span class="sig-paren">(</span><em>other</em>, <em>n_samples=10000</em><span class="sig-paren">)</span><a class="headerlink" href="#delfi.distribution.mixture.MoT.kl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates the KL from this to another PDF</p>
+<p>KL(this | other), using Monte Carlo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.mixture.MoT.prune_negligible_components">
+<code class="descname">prune_negligible_components</code><span class="sig-paren">(</span><em>threshold</em><span class="sig-paren">)</span><a class="headerlink" href="#delfi.distribution.mixture.MoT.prune_negligible_components" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prune components</p>
+<p>Removes all the components whose mixing coefficient is less
+than a threshold.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="uniform">
+<h2>Uniform<a class="headerlink" href="#uniform" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="delfi.distribution.Uniform">
+<em class="property">class </em><code class="descclassname">delfi.distribution.</code><code class="descname">Uniform</code><span class="sig-paren">(</span><em>lower=0.0</em>, <em>upper=1.0</em>, <em>seed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/Uniform.html#Uniform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.Uniform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">delfi.distribution.BaseDistribution.DistributionBase</span></code></p>
+<dl class="method">
+<dt id="delfi.distribution.Uniform.eval">
+<code class="descname">eval</code><span class="sig-paren">(</span><em>x</em>, <em>ii=None</em>, <em>log=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/Uniform.html#Uniform.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.Uniform.eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to evaluate pdf</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>int</em><em> or </em><em>list</em><em> or </em><em>np.array</em>) – Rows are inputs to evaluate at</li>
+<li><strong>ii</strong> (<em>list</em>) – A list of indices specifying which marginal to evaluate.
+If None, the joint pdf is evaluated</li>
+<li><strong>log</strong> (<em>bool</em><em>, </em><em>defaulting to True</em>) – If True, the log pdf is evaluated</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">scalar</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.Uniform.gen">
+<code class="descname">gen</code><span class="sig-paren">(</span><em>n_samples=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/delfi/distribution/Uniform.html#Uniform.gen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#delfi.distribution.Uniform.gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate samples</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n_samples</strong> (<em>int</em>) – Number of samples to generate</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">n_samples x self.ndim</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="delfi.distribution.Uniform.gen_newseed">
+<code class="descname">gen_newseed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#delfi.distribution.Uniform.gen_newseed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a new random seed</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="delfi.distribution.Uniform.mean">
+<code class="descname">mean</code><a class="headerlink" href="#delfi.distribution.Uniform.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Means</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="delfi.distribution.Uniform.std">
+<code class="descname">std</code><a class="headerlink" href="#delfi.distribution.Uniform.std" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standard deviations of marginals</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Mackelab.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

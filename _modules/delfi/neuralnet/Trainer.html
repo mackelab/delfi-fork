@@ -1,0 +1,452 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>delfi.neuralnet.Trainer &mdash; delfi 0.1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="delfi 0.1.1 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> delfi
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../credits.html">Credits</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">delfi</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>delfi.neuralnet.Trainer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for delfi.neuralnet.Trainer</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">delfi.neuralnet.DataStream</span> <span class="k">as</span> <span class="nn">ds</span>
+<span class="kn">import</span> <span class="nn">lasagne.updates</span> <span class="k">as</span> <span class="nn">lu</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pdb</span>
+<span class="kn">import</span> <span class="nn">theano</span>
+<span class="kn">import</span> <span class="nn">theano.tensor</span> <span class="k">as</span> <span class="nn">tt</span>
+
+<span class="kn">from</span> <span class="nn">delfi.utils.progress</span> <span class="k">import</span> <span class="n">progressbar</span>
+<span class="kn">from</span> <span class="nn">lasagne.utils</span> <span class="k">import</span> <span class="n">compute_norms</span>
+
+<span class="n">dtype</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">floatX</span>
+
+
+<div class="viewcode-block" id="Trainer"><a class="viewcode-back" href="../../../api/neuralnet.html#delfi.neuralnet.Trainer.Trainer">[docs]</a><span class="k">class</span> <span class="nc">Trainer</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">trn_data</span><span class="p">,</span> <span class="n">val_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">step</span><span class="o">=</span><span class="n">lu</span><span class="o">.</span><span class="n">adam</span><span class="p">,</span> <span class="n">max_norm</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">monitor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct and configure the trainer</span>
+
+<span class="sd">        The trainer takes as inputs a neural network, a loss function and</span>
+<span class="sd">        training data. During init the theano functions for training are</span>
+<span class="sd">        compiled.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        network : NeuralNet instance</span>
+<span class="sd">            The neural network to train</span>
+<span class="sd">        loss : theano variable</span>
+<span class="sd">            Loss function to be computed for network training</span>
+<span class="sd">        trn_data : array</span>
+<span class="sd">            Training data in the form (params, stats)</span>
+<span class="sd">        val_data : array</span>
+<span class="sd">            Validation data in the form (params, stats)</span>
+<span class="sd">        step : function</span>
+<span class="sd">            Function to call for updates, will pass gradients and parameters</span>
+<span class="sd">        max_norm : float</span>
+<span class="sd">            Total norm constraint for gradients</span>
+<span class="sd">        monitor : dict</span>
+<span class="sd">            Dict containing theano variables (and names as keys) that should be</span>
+<span class="sd">            recorded during training along with the loss function</span>
+<span class="sd">        seed : int or None</span>
+<span class="sd">            If provided, random number generator for batches will be seeded</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span>
+
+        <span class="c1"># gradients</span>
+        <span class="n">grads</span> <span class="o">=</span> <span class="n">tt</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">max_norm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">grads</span> <span class="o">=</span> <span class="n">lu</span><span class="o">.</span><span class="n">total_norm_constraint</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">max_norm</span><span class="o">=</span><span class="n">max_norm</span><span class="p">)</span>
+
+        <span class="c1"># updates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updates</span> <span class="o">=</span> <span class="n">step</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="c1"># prepare train data</span>
+        <span class="n">trn_data_vars</span> <span class="o">=</span> <span class="p">[</span><span class="n">theano</span><span class="o">.</span><span class="n">shared</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">trn_data</span><span class="p">]</span>
+        <span class="n">n_trn_data_list</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">trn_data</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span>
+            <span class="n">n_trn_data_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Number of train data is not consistent.&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_trn_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">n_trn_data_list</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># theano function for single batch update</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">tt</span><span class="o">.</span><span class="n">ivector</span><span class="p">(</span><span class="s1">&#39;idx&#39;</span><span class="p">)</span>
+        <span class="n">trn_inputs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">y</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">x</span><span class="p">]</span>  <span class="c1"># trn_data is (params, stats)</span>
+        <span class="n">trn_inputs_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">trn_data_vars</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trn_outputs_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trn_outputs_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">monitor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">monitor_names</span><span class="p">,</span> <span class="n">monitor_nodes</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">monitor</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trn_outputs_names</span> <span class="o">+=</span> <span class="n">monitor_names</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trn_outputs_nodes</span> <span class="o">+=</span> <span class="n">monitor_nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_update</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">(</span>
+            <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+            <span class="n">outputs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">trn_outputs_nodes</span><span class="p">,</span>
+            <span class="n">givens</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">trn_inputs</span><span class="p">,</span> <span class="n">trn_inputs_data</span><span class="p">)),</span>
+            <span class="n">updates</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">updates</span>
+        <span class="p">)</span>
+
+        <span class="c1"># if validation data is given, then set up validation too</span>
+        <span class="k">if</span> <span class="n">val_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># prepare validation data</span>
+            <span class="n">n_val_data_list</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">val_data</span><span class="p">])</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="n">n_val_data_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Number of validation data is not consistent.&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_val_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">n_val_data_list</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">val_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">theano</span><span class="o">.</span><span class="n">shared</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">val_data</span><span class="p">]</span>
+
+            <span class="c1"># compile theano function for validation</span>
+            <span class="n">val_inputs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">input</span><span class="p">]</span> <span class="k">if</span> <span class="n">val_target</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">val_target</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validate</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">(</span>
+                <span class="n">inputs</span><span class="o">=</span><span class="p">[],</span>
+                <span class="n">outputs</span><span class="o">=</span><span class="n">val_loss</span><span class="p">,</span>
+                <span class="n">givens</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">val_inputs</span><span class="p">,</span> <span class="n">val_data</span><span class="p">))</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validate</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># initialize variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_val_min</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_val_min_iter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_val_min_params</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># pointers to model from self for better debugging</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">idx</span> <span class="o">=</span> <span class="n">idx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trn_inputs</span> <span class="o">=</span> <span class="n">trn_inputs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trn_data</span> <span class="o">=</span> <span class="n">trn_data</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">idx_stream</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">IndexSubSampler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_trn_data</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Trainer.train"><a class="viewcode-back" href="../../../api/neuralnet.html#delfi.neuralnet.Trainer.Trainer.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <span class="n">epochs</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+              <span class="n">minibatch</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+              <span class="n">monitor_every</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">pdb_iter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">stop_on_nan</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+              <span class="n">tol</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">tol_val</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Trains the model</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        epochs : int</span>
+<span class="sd">            number of epochs (iterations per sample)</span>
+<span class="sd">        minibatch : int</span>
+<span class="sd">            minibatch size</span>
+<span class="sd">        monitor_every : int</span>
+<span class="sd">            monitoring frequency</span>
+<span class="sd">        pdb_iter : int</span>
+<span class="sd">            if set, will set a breakpoint after given number of iterations</span>
+<span class="sd">        stop_on_nan : bool (default: False)</span>
+<span class="sd">            if True, will stop if loss becomes NaN</span>
+<span class="sd">        tol : float</span>
+<span class="sd">            tolerance criterion for stopping based on training set</span>
+<span class="sd">        tol_val : float</span>
+<span class="sd">            tolerance criterion for stopping based on validation set</span>
+<span class="sd">        verbose : bool</span>
+<span class="sd">            if True, print progress during training</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict : containing loss values and possibly additional keys</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">maxiter</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_trn_data</span> <span class="o">*</span> <span class="n">epochs</span> <span class="o">/</span> <span class="n">minibatch</span><span class="p">)</span>
+
+        <span class="c1"># initialize variables</span>
+        <span class="nb">iter</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">progress_trn_iter</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">progress_trn_val</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">progress_trn_out</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">progress_trn_obs</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">progress_val_iter</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">progress_val_val</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">minibatch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_trn_data</span> <span class="k">if</span> <span class="n">minibatch</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">minibatch</span>
+        <span class="n">monitor_every</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+            <span class="s1">&#39;inf&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">monitor_every</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">monitor_every</span>
+
+        <span class="n">trn_outputs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">trn_outputs_names</span><span class="p">:</span>
+            <span class="n">trn_outputs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># main training loop</span>
+        <span class="k">with</span> <span class="n">progressbar</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">maxiter</span> <span class="o">*</span> <span class="n">minibatch</span><span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
+            <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxiter</span><span class="p">):</span>
+                <span class="n">minibatch_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">idx_stream</span><span class="o">.</span><span class="n">gen</span><span class="p">(</span><span class="n">minibatch</span><span class="p">)</span>
+                <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_update</span><span class="p">(</span><span class="n">minibatch_idx</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trn_outputs_names</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+                    <span class="n">trn_outputs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+                <span class="n">trn_loss</span> <span class="o">=</span> <span class="n">trn_outputs</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">diff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">-</span> <span class="n">trn_loss</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">=</span> <span class="n">trn_loss</span>
+
+                <span class="nb">iter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="k">if</span> <span class="nb">iter</span> <span class="o">%</span> <span class="n">monitor_every</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">progress_val_iter</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">iter</span><span class="p">)</span>
+                        <span class="n">val_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+                        <span class="n">progress_val_val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_loss</span><span class="p">)</span>
+                        <span class="n">diff_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_val</span> <span class="o">-</span> <span class="n">val_loss</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">loss_val</span> <span class="o">=</span> <span class="n">val_loss</span>
+
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_val</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_val_min</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">loss_val_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_val</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">loss_val_min_iter</span> <span class="o">=</span> <span class="nb">iter</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">loss_val_min_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_params</span><span class="p">()</span>
+
+                <span class="c1"># check for convergence</span>
+                <span class="k">if</span> <span class="n">tol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+                        <span class="k">break</span>
+
+                <span class="c1"># check for nan</span>
+                <span class="k">if</span> <span class="n">stop_on_nan</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">trn_loss</span><span class="p">):</span>
+                    <span class="k">break</span>
+
+                <span class="c1"># possible breakpoint</span>
+                <span class="k">if</span> <span class="n">pdb_iter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">pdb_iter</span> <span class="o">==</span> <span class="nb">iter</span><span class="p">:</span>
+                    <span class="n">mb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">minibatch_idx</span><span class="p">)</span>
+
+                    <span class="k">def</span> <span class="nf">get_outputs</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">minibatch_idx</span><span class="o">=</span><span class="n">mb</span><span class="p">):</span>
+                        <span class="n">fun</span> <span class="o">=</span> <span class="n">theano</span><span class="o">.</span><span class="n">function</span><span class="p">(</span>
+                            <span class="n">inputs</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">idx</span><span class="p">],</span>
+                            <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
+                            <span class="n">givens</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trn_inputs</span><span class="p">,</span>
+                                            <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">trn_data</span><span class="p">])),</span>
+                            <span class="n">on_unused_input</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span>
+                        <span class="p">)</span>
+                        <span class="k">return</span> <span class="n">fun</span><span class="p">(</span><span class="n">minibatch_idx</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">))</span>
+                    <span class="n">go</span> <span class="o">=</span> <span class="n">get_outputs</span>
+                    <span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
+
+                <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">minibatch</span><span class="p">)</span>
+
+        <span class="c1"># convert lists to arrays</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">trn_outputs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">trn_outputs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">trn_outputs</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Mackelab.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.1.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
