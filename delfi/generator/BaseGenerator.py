@@ -92,7 +92,7 @@ class BaseGenerator(metaclass=ABCMetaDoc):
             data_valid = []  # list of lists containing n_reps dicts with data
             for param, datum in zip(params, result):
                 # check validity
-                response = self._feedback_forward_model(data_valid)
+                response = self._feedback_forward_model(datum)
                 if response == 'accept' or skip_feedback:
                     data_valid.append(datum)
                     # if data is accepted, accept the param as well
@@ -115,10 +115,9 @@ class BaseGenerator(metaclass=ABCMetaDoc):
                     final_stats.append(sum_stats)
                     # if sum stats is accepted, accept the param as well
                     final_params.append(param)
-                    i += 1
+                    # TODO: find a more plausible increment for the pbar. move it to the data loop?
                     pbar.update(1)
                 elif response == 'discard':
-                    i += 1
                     pbar.update(1)
                 else:
                     raise ValueError('response not supported')
