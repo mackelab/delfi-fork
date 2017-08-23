@@ -2,6 +2,8 @@ import abc
 import numpy as np
 
 from delfi.utils.meta import ABCMetaDoc
+from delfi.utils.progress import no_tqdm
+from tqdm import tqdm
 
 
 class BaseGenerator(metaclass=ABCMetaDoc):
@@ -82,7 +84,7 @@ class BaseGenerator(metaclass=ABCMetaDoc):
         data_valid = []  # list of lists containing n_reps dicts with data
         for param, datum in zip(params, result):
             # check validity
-            response = self._feedback_forward_model(data_valid)
+            response = self._feedback_forward_model(datum)
             if response == 'accept' or skip_feedback:
                 data_valid.append(datum)
                 # if data is accepted, accept the param as well
@@ -111,13 +113,13 @@ class BaseGenerator(metaclass=ABCMetaDoc):
             else:
                 raise ValueError('response not supported')
 
-        # TODO: for n_reps > 1 duplicate params; reshape stats array
-        params = np.array(final_params)  # n_samples x n_reps x dim theta
-        # n_samples x n_reps x dim summary stats
-        stats = np.array(final_stats)
-        stats = stats.squeeze(axis=1)
+            # TODO: for n_reps > 1 duplicate params; reshape stats array
+            params = np.array(final_params)  # n_samples x n_reps x dim theta
+            # n_samples x n_reps x dim summary stats
+            stats = np.array(final_stats)
+            stats = stats.squeeze(axis=1)
 
-        return params, stats
+            return params, stats
 
     @abc.abstractmethod
     def _feedback_proposed_param(self, param):
