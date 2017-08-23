@@ -107,19 +107,18 @@ class BaseGenerator(metaclass=ABCMetaDoc):
                 final_stats.append(sum_stats)
                 # if sum stats is accepted, accept the param as well
                 final_params.append(param)
-                i += 1
             elif response == 'discard':
-                i += 1
+                continue
             else:
                 raise ValueError('response not supported')
 
-            # TODO: for n_reps > 1 duplicate params; reshape stats array
-            params = np.array(final_params)  # n_samples x n_reps x dim theta
-            # n_samples x n_reps x dim summary stats
-            stats = np.array(final_stats)
-            stats = stats.squeeze(axis=1)
+        # TODO: for n_reps > 1 duplicate params; reshape stats array
+        params = np.array(final_params)  # n_samples x n_reps x dim theta
+        # n_samples x n_reps x dim summary stats
+        stats = np.array(final_stats)
+        stats = stats.squeeze(axis=1)
 
-            return params, stats
+        return params, stats
 
     @abc.abstractmethod
     def _feedback_proposed_param(self, param):
