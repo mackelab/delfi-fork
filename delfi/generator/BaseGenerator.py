@@ -2,8 +2,6 @@ import abc
 import numpy as np
 
 from delfi.utils.meta import ABCMetaDoc
-from delfi.utils.progress import no_tqdm
-from tqdm import tqdm
 
 
 class BaseGenerator(metaclass=ABCMetaDoc):
